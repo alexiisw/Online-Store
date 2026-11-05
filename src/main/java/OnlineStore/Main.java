@@ -1,33 +1,16 @@
+package OnlineStore;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-
-        try{
-            BufferedReader reader = new BufferedReader(new FileReader("employee.txt"));
-            System.out.print("Employee Info:\n");
-
-            String productInfo;
-            reader.readLine(); // will skip the first line in the note
-
-            while ((productInfo = reader.readLine()) != null) { // means while there are lines to read - null = blank
-                String[] info = productInfo.split("\\|");// going to split the lines by "|"
-                long sku = Long.parseLong(info[0]);
-                String name = info[1];
-                double price = Double.parseDouble(info[2]);
-                String department = info[3];
-
-                Products product = new Products(sku, name, price, department);
+        ArrayList<Products> inventory = Inventory.addProducts; //
+        Menu.homeMenu(inventory);
 
 
-                System.out.printf("%d, %s, %.2f, %s\n", product.getProductSku(),
-                        product.getName(), product.getPrice(), product.getDepartment());
-            }
-        } catch (IOException e) {
-            System.out.println("File not found.");
-        }
     }
 
     //Customers should be able to view all products
@@ -38,10 +21,10 @@ public class Main {
 //    Screens
 //• The Store Home Screen - The home screen should display a list
 //    of options that a user can choose from.
-//    o Display Products
+//    o Display OnlineStore.Products
 //    o Display Cart
 //    o Exit - closes out of the application
-//• Display Products - Displays a list of products that your store
+//• Display OnlineStore.Products - Displays a list of products that your store
 //    sells.
 //    o On this screen the customer should be able to  - Search or filter the list of products - Add a product to their cart - Go Back to the home page
 //• Display Cart - This displays a list of line items that are in the

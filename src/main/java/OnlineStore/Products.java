@@ -1,11 +1,13 @@
+package OnlineStore;
+
 public class Products { // stores the properties defined by csv file
-    private long sku;
+    private String sku;
     private String name;
     private double price;
     private String department ;
 
     // Constructor - stores values
-    public Products (long sku,
+    public Products (String sku,
                      String name,
                      double price,
                      String department){
@@ -16,7 +18,7 @@ public class Products { // stores the properties defined by csv file
     }
     //Methods - returns stored values
     //Getters
-    public long getProductSku() {
+    public String getSku() {
         return sku;
     }public String getName() {
         return name;
@@ -25,4 +27,9 @@ public class Products { // stores the properties defined by csv file
     }public String getDepartment(){
         return department;
     }
+    void displayInfo(){
+        System.out.printf("SKU: %s | Product Name: %s | Price: $%.2f | Department: %s%n", sku, name,
+                          price, department);
+    }
 }
+
