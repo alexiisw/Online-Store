@@ -1,0 +1,239 @@
+package OnlineStore;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import static OnlineStore.Search.*;
+
+public class Menu {
+    public static void homeMenu(ArrayList<Products> inventory) {// uses the inventory it receives
+        ArrayList<Products> customerCart = new ArrayList<>();
+        ArrayList<String> displayedProducts = new ArrayList<>();
+        Scanner read = new Scanner(System.in); // name scanner what its doing
+
+        boolean systemsRunning = true;
+        while (systemsRunning) {
+            System.out.print("+---------------------------+\n");
+            System.out.print("+  Welcome to Online Store!  +\n");
+            System.out.print("+---------------------------+\n");
+            System.out.print("Please input your selection from the following menu choices:\n");
+            System.out.println("(1)Display Products \n(2)Display Cart \n(3)Exit - closes out of the application");
+            int selection = read.nextInt();
+
+            if (selection == 1) {
+                for (Products products : inventory) {// cycle through the list until it comes back null
+                    System.out.printf("%s | %s | $%.2f | %s%n", products.getSku(), products.getName(),
+                            products.getPrice(), products.getDepartment()); // displays the product
+                }
+                System.out.println("Would you like to search by (1)Name, (2)Price, (3)Department, (4)Exit");
+                int searchMethod = read.nextInt();
+                read.nextLine(); // eats empty line
+
+                if (searchMethod == 1) {
+                    System.out.println("Please enter the product name you are looking for: ");
+                    String nameSearch = read.nextLine();
+                    ArrayList<Products> matchingName = searchByProductName(inventory, nameSearch);
+
+                    if (!matchingName.isEmpty()) { // if the list is not empty it will cycle through the list
+                        System.out.print("Product(s) Found! \n");
+
+                        for (Products products : matchingName) {// going to loop through the list of items in the matching department
+                            System.out.printf("%s | %s | $%.2f | %s%n", products.getSku(), products.getName(),
+                                    products.getPrice(), products.getDepartment());
+                        }
+                            System.out.println("Would you like to an add item to your cart? Yes or No");
+                            String addToCart = read.nextLine();
+
+                            while (addToCart.equalsIgnoreCase("Yes")) {
+                                System.out.println("Please enter the product name you would like to add to your cart: ");
+                                nameSearch = read.nextLine();
+
+                                if (nameSearch.equalsIgnoreCase("exit")){
+                                    System.out.println("Redirecting back to Home Menu"); // gives an out in case a valid search is never found
+                                }
+                                ArrayList<Products> foundProduct = searchByProductName(inventory, nameSearch);
+
+                                if (!foundProduct.isEmpty()) { // as long a result comes back
+                                    Products addedProduct = foundProduct.get(0);
+                                    System.out.print("Product Found! \n");
+                                    System.out.printf("%s | %s | $%.2f | %s%n", addedProduct.getSku(), addedProduct.getName(),
+                                            addedProduct.getPrice(), addedProduct.getDepartment());
+
+                                    customerCart.add(addedProduct); // adds item to cart
+                                    System.out.print("Item has been added to cart.\n");
+                                    System.out.println("Would you like to add another item? Yes or No ");
+                                    addToCart = read.nextLine();
+
+                                } else {
+                                    System.out.print("Item not found! Please enter a valid product name. ");
+                                }
+                            }
+                            System.out.print("Redirecting back to Home Menu");
+                    } else {
+                        System.out.print("Item not found! Please enter a valid product name. ");
+                    }
+                } else if (searchMethod == 2) {
+                    System.out.println("Please enter the product's price: ");
+                    String priceSearch = read.nextLine();
+                    double productPrice = Double.parseDouble(priceSearch);
+                    ArrayList<Products> matchingPrice = searchByProductPrice(inventory, productPrice);
+
+                    if (!matchingPrice.isEmpty()) { // if the list is not empty it will cycle through the list
+                        System.out.print("Product(s) Found! \n");
+
+                        for (Products products : matchingPrice) {// going to loop through the list of items in the matching department
+                            System.out.printf("%s | %s | $%.2f | %s%n", products.getSku(), products.getName(),
+                                    products.getPrice(), products.getDepartment());
+                        }
+                            System.out.println("Would you like to an add item to your cart? Yes or No");
+                            String addToCart = read.nextLine();
+
+                            while (addToCart.equalsIgnoreCase("Yes")) {
+                                System.out.println("Please enter the product name you would like to add to your cart: ");
+                                String nameSearch = read.nextLine();
+
+                                if (nameSearch.equalsIgnoreCase("exit")){
+                                    System.out.println("Redirecting back to Home Menu"); // gives an out in case a valid search is never found
+                                }
+                                ArrayList<Products> foundProduct = searchByProductName(inventory, nameSearch);
+
+                                if (!foundProduct.isEmpty()) { // as long a result comes back
+                                    Products addedProduct = foundProduct.get(0);
+                                    System.out.println("Product Found! ");
+                                    System.out.printf("%s | %s | $%.2f | %s%n", addedProduct.getSku(), addedProduct.getName(),
+                                            addedProduct.getPrice(), addedProduct.getDepartment());
+
+                                    customerCart.add(addedProduct); // adds item to cart
+                                    System.out.print("Item has been added to cart.\n");
+                                    System.out.println("Would you like to add another item? Yes or No ");
+                                    addToCart = read.nextLine();
+                                }else {
+                                        System.out.print("Item not found! Please enter a valid product name. ");
+                                }
+                            }
+                            System.out.print("Redirecting back to Home Menu");
+                    } else {
+                        System.out.print("Item not found! Please enter a valid product price. ");
+                    }
+                } else if (searchMethod == 3) {
+                    System.out.println("Please enter the store department you wish to explore: ");
+                    String departmentSearch = read.nextLine().toUpperCase();
+                    ArrayList<Products> matchingDepartment = searchByProductDepartment(inventory, departmentSearch);
+
+                    if (!matchingDepartment.isEmpty()) { // if the list is not empty it will cycle through the list
+                        System.out.print("Product(s) Found! \n");
+
+                        for (Products products : matchingDepartment) {// going to loop through the list of items in the matching department
+                            System.out.printf("%s | %s | $%.2f | %s%n", products.getSku(), products.getName(),
+                                    products.getPrice(), products.getDepartment());
+                        }
+                            System.out.println("Would you like to an add item to your cart? Yes or No");
+                            String addToCart = read.nextLine();
+
+                            while (addToCart.equalsIgnoreCase("yes")) {
+                                System.out.println("Please enter the product name you would like to add to your cart: ");
+                                String nameSearch = read.nextLine();
+
+                                if (nameSearch.equalsIgnoreCase("exit")){
+                                    System.out.println("Redirecting back to Home Menu"); // gives an out in case a valid search is never found
+                                }
+                                ArrayList<Products> foundProduct = searchByProductName(inventory, nameSearch);
+
+                                if (!foundProduct.isEmpty()) { // checks whether the list contains at least one item
+                                    Products addedProduct = foundProduct.get(0); // pull the
+                                    System.out.print("Product Found! \n");
+                                    System.out.printf("%s | %s | $%.2f | %s%n", addedProduct.getSku(), addedProduct.getName(),
+                                            addedProduct.getPrice(), addedProduct.getDepartment());
+
+                                    customerCart.add(addedProduct); // adds item to cart
+                                    System.out.print("Item has been added to cart.\n");
+                                    System.out.print("Would you like to add another item? Yes or No \n");
+                                    addToCart = read.nextLine();
+
+                                } else {
+                                    System.out.print("Item not found! Please enter a valid product name. ");
+                                }
+                            }
+                            System.out.print("Redirecting back to Home Menu"); // message that displays when someone types 'no' to adding another item
+                    }else {
+                        System.out.print("Department not found! Please enter a valid department. ");
+                    }
+                }else if (searchMethod == 4) {
+                    systemsRunning = false;
+                    System.out.print("Thank you for visiting. See you soon!");
+                } else {
+                    System.out.print("That is an invalid input. Please try again!");
+                }
+            } else if (selection == 2) {
+                boolean displayCart = true;
+                while (displayCart) {
+                    double total = 0; // will start at zero everytime
+
+                    for (Products products : customerCart) {// cycle through every item in the cart until it comes back null
+                        if (!displayedProducts.contains(products.getSku())) { // cycles through the list, compares the SKU and determines if they contain the same SKU
+
+                            int quantity = 0; // starts the qty for a product/item at 0
+
+                            for (Products cartItem : customerCart) { // cycles through the cart items in the customer cart
+                                if (cartItem.getSku().equals(products.getSku())) { // compares the items in the cart to see if they contain the same SKU#, it will adjust the qty accordingly
+                                    quantity++; // will add 1 to the quantity
+                                }
+                            }
+                            System.out.printf("%s | %s | QTY: %d | $%.2f | %s%n", products.getSku(), products.getName(), quantity,
+                                    products.getPrice(), products.getDepartment()); // displays the product && its qty
+
+                            displayedProducts.add(products.getSku()); //
+                        }
+                        total += products.getPrice(); // total = sum of products price
+                    }
+                    System.out.printf("Total: $%.2f%n", total); // displays total
+
+                    System.out.print("Please input your selection from the following options:\n");
+                    System.out.println("(1)Check Out \n(2)Remove Product \n(3)Go Back - returns to HomeMenu ");
+                    int subSelection2 = read.nextInt();
+                    read.nextLine();
+
+                    if (subSelection2 == 1) { // need to see if there's a check out code or just message
+                        System.out.printf("Total: $%.2f%n", total); // displays total
+                        System.out.println("Thank you for shopping with us. See you next time!");
+
+                    } else if (subSelection2 == 2) {
+                        System.out.print("Which item would you like to remove? Enter the product name below. \n");
+                        String removeProduct = read.nextLine();
+
+                        if (removeProduct.equalsIgnoreCase("exit")){
+                            System.out.println("Redirecting back to Home Menu"); // gives an out in case a valid search is never found
+                        }
+                        ArrayList<Products> foundCartProduct = searchByProductName(customerCart, removeProduct);
+
+                        if (!foundCartProduct.isEmpty()) { // ensures the product is actually on the list
+                            Products removedProduct = foundCartProduct.get(0);
+                            System.out.print("Product Found! \n");
+                            System.out.printf("%s | %s | $%.2f | %s%n", removedProduct.getSku(), removedProduct.getName(),
+                                    removedProduct.getPrice(), removedProduct.getDepartment());
+
+                            customerCart.remove(removedProduct);
+                            System.out.println("Item has been removed. ");
+                        } else {
+                            System.out.println("Item not found in cart"); // its goes back to display cart and options
+                        }
+                        System.out.print("Redirecting back to Home Menu"); // message that displays when someone types 'no' to adding another item
+
+                    } else if (subSelection2 == 3) {
+                        System.out.print("Redirecting back to Home Menu");
+                        displayCart = false;
+
+                    } else {
+                        System.out.print("That is an invalid input. Please try again!");
+                    }
+                }
+            } else if (selection == 3) {
+                systemsRunning = false;
+                System.out.print("Thank you for visiting. See you soon!");
+
+            } else {
+                System.out.print("That is an invalid input. Please try again!");
+            }
+        }
+    }
+}

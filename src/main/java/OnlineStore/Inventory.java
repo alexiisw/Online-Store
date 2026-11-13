@@ -11,7 +11,6 @@ public class Inventory {
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader("products.csv"));
-            System.out.print("Employee Info:\n");
 
             String productInfo;
             reader.readLine(); // will skip the first line in the note
